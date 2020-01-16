@@ -1,4 +1,13 @@
+
+import io
+import os
+
+dir = os.path.dirname(__file__)
+
 from distutils.core import setup
+
+with io.open(os.path.join(dir, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
   name = 'InfiniteTrends',
@@ -6,6 +15,8 @@ setup(
   version = '0.2',
   license='MIT',
   description = 'An upgraded Google Trends API that can query infinitely many terms.',
+  long_description=long_description,
+  long_description_content_type='text/markdown',
   author = 'Asher Noel',
   author_email = 'asher13a@gmail.com',
   url = 'https://www.ashernoel.io',

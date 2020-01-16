@@ -16,7 +16,7 @@ __email__ = "asher13a@gmail.com"
 class pytrendsUpgrade:
 
     @staticmethod
-    def get_interest_over_time(keywords, region, timeframe, flagTopic):
+    def get_interest_over_time(keywords, region, timeframe, topic_flag):
         """Constructs a new trends over time instance
                 Args:
                     keywords: The input terms, e.g. ["Harvard University", "Yale University"]
@@ -29,7 +29,7 @@ class pytrendsUpgrade:
                     timeframe: A string in "YYYY-MM-DD YYYY-MM-DD" or "START END" format
 
                     topic_flag: If FLAG = FALSE, keywords will be "Search Terms" in Google Trends
-                                If FLAG = TRUE, keywords will be the first "Topic" that come up when typing in a keyword on Trends.
+                                If FLAG = TRUE, keywords will be the first "Topic" that come up when typing in a keyword
 
                 """
 
@@ -37,57 +37,56 @@ class pytrendsUpgrade:
 
         # Initialize flag and temporary list of queries with the keyword that should be in all of them.
         old = 0
-        tempList = [pytrends.suggestions(keywords[0])[0]['mid']] if flagTopic else [keywords[0]]
+        temp_list = [pytrends.suggestions(keywords[0])[0]['mid']] if topic_flag else [keywords[0]]
 
-        # Initialize the Dataframes
-        trendData = pd.DataFrame()
-        oldData = pd.DataFrame()
+        trend_data = pd.DataFrame()
+        old_data = pd.DataFrame()
 
         for index in range(1, len(keywords)):
 
             # Add the next keyword in the list to the temporary list of queries
             keyword = keywords[index]
 
-            # If the keyword does not have enough traffic, it will not be a topic; in these cases, add it as a search term.
+            # If the keyword does not have enough traffic, it will not be a topic; add it as a search term.
             try:
-                tempList.append(pytrends.suggestions(keyword)[0]['mid']) if flagTopic else tempList.append(keyword)
+                temp_list.append(pytrends.suggestions(keyword)[0]['mid']) if topic_flag else temp_list.append(keyword)
             except IndexError:
-                tempList.append(keyword)
+                temp_list.append(keyword)
 
             # The maximum query request is five terms
             if index // 4 != old or (index == len(keywords) - 1):
 
                 # Build the payload
-                pytrends.build_payload(tempList, cat=0, timeframe=timeframe, geo=region, gprop='')
+                pytrends.build_payload(temp_list, cat=0, timeframe=timeframe, geo=region, gprop='')
 
-                newData = pytrends.interest_over_time()
+                new_data = pytrends.interest_over_time()
 
                 # Adjust the data so that the first column, the master column, has a maximum of 100
-                maxMaster = newData[pytrends.suggestions(keywords[0])[0]['mid']].max() if flagTopic else newData[
+                max_master = new_data[pytrends.suggestions(keywords[0])[0]['mid']].max() if topic_flag else new_data[
                     keywords[0]].max()
 
-                newData.iloc[:, :-1] *= 100 / (maxMaster)
+                new_data.iloc[:, :-1] *= 100 / (max_master)
 
                 # Merge the old and new DataFrames
                 if old == 0:
-                    oldData = newData.iloc[:, :-1]
-                    trendData = oldData
+                    old_data = new_data.iloc[:, :-1]
+                    trend_data = old_data
                 else:
                     try:
-                        trendData = oldData.join(newData.iloc[:, 1:-1])
+                        trend_data = old_data.join(new_data.iloc[:, 1:-1])
                     except ValueError:
-                        trendData = oldData.join(newData.iloc[:, 1:-1], lsuffix='_left', rsuffix='_right')
-                    oldData = trendData
+                        trend_data = old_data.join(new_data.iloc[:, 1:-1], lsuffix='_left', rsuffix='_right')
+                    old_data = trend_data
 
                 # Reset the temporary queries and increase the flag.
-                tempList = [pytrends.suggestions(keywords[0])[0]['mid']] if flagTopic else [keywords[0]]
+                temp_list = [pytrends.suggestions(keywords[0])[0]['mid']] if topic_flag else [keywords[0]]
                 old += 1
 
         # Update the columns of the trend data with the original names
-        trendData.columns = keywords
+        trend_data.columns = keywords
 
         # Reorder the columns based off of their mean values.
-        return trendData.reindex(trendData.mean().sort_values(ascending=False).index, axis=1)
+        return trend_data.reindex(trend_data.mean().sort_values(ascending=False).index, axis=1)
 
     @staticmethod
     def get_viral_keywords(keyword, region, timeframe, interval, cutoff):
@@ -132,59 +131,58 @@ class pytrendsUpgrade:
             return topics[pytrends.suggestions(keyword)[0]['mid']]['rising'].loc[
                 topics[pytrends.suggestions(keyword)[0]['mid']]['rising']['value'] >= cutoff]
 
-        def getTimeframes(start, end, interval):
+        def get_timeframes(start, end, interval):
             # Start and end are in YYYY-MM-DD format.
             # interval is an integer in days.
             # return a list of all of the intervals in [YYYY-MM-DD YYYY-MM-DD] between a start and end date
 
             intervals = []
 
-            startYear = int(start[:4]);
-            startMonth = int(start[5:7]);
-            startDay = int(start[8:])
+            start_year = int(start[:4]);
+            start_month = int(start[5:7]);
+            start_day = int(start[8:])
 
-            def decimalTime(time):
+            def decimal_time(time):
                 # input in YYYY-MM-DD format
                 # output in YYYY.XX format.
                 return int(time[:4]) + int(time[5:7]) / 12 + int(time[8:]) / 365
 
-            while decimalTime(start) < decimalTime(end):
-                tempDay = startDay + interval;
-                tempYear = startYear;
-                tempMonth = startMonth
+            while decimal_time(start) < decimal_time(end):
+                temp_day = start_day + interval;
+                temp_year = start_year;
+                temp_month = start_month
 
                 # Adjust the day and month
-                if tempDay > 30 and startMonth != 2:
-                    tempDay = tempDay % 30
-                    tempMonth += 1
-                elif tempDay > 28 and startMonth == 2:
-                    tempDay = tempDay % 28
-                    tempMonth += 1
+                if temp_day > 30 and start_month != 2:
+                    temp_day = temp_day % 30
+                    temp_month += 1
+                elif temp_day > 28 and start_month == 2:
+                    temp_day = temp_day % 28
+                    temp_month += 1
 
                 # Adjust the month and year
-                if tempMonth > 12:
-                    tempYear += 1
-                    tempMonth = tempMonth % 12
+                if temp_month > 12:
+                    temp_year += 1
+                    temp_month = temp_month % 12
 
-                def toDatetime(year, month, day):
+                def to_datetime(year, month, day):
                     # input as integers, output as YYYY-MM-DD
                     MM = "0" + str(month) if month < 10 else str(month)
                     return str(year) + "-" + str(MM) + "-" + str(day)
 
                 # add the new interval to intervals
-                start = toDatetime(tempYear, tempMonth, tempDay)
+                start = to_datetime(temp_year, temp_month, temp_day)
 
-                intervals.append(toDatetime(startYear, startMonth, startDay) + " " + start)
+                intervals.append(to_datetime(start_year, start_month, start_day) + " " + start)
 
-                startDay = tempDay;
-                startMonth = tempMonth;
-                startYear = tempYear
+                start_day = temp_day;
+                start_month = temp_month;
+                start_year = temp_year
 
             return intervals
 
-
         # Add all of the related topics over that timeframe to the keywords list
-        times = getTimeframes(timeframe[:10], timeframe[11:], interval)
+        times = get_timeframes(timeframe[:10], timeframe[11:], interval)
         for time in times:
             topics = get_rising_related_topics(keyword, region, time, cutoff)
             keyword_types.extend(topics['topic_type'].tolist())
@@ -192,28 +190,25 @@ class pytrendsUpgrade:
             virality.append(len(topics['topic_title'].tolist()))
 
         # Remove duplicates and punctuation from keywords:
-        adjKeywords = []
-        [adjKeywords.append(word.translate(str.maketrans('', '', string.punctuation))) for word in keywords if (word.translate(str.maketrans('', '', string.punctuation)) not in adjKeywords) and len(word) > 2]
-
-        # Remove single words that are too common in english like Mother or July
-        adj2Keywords = []
-        [adj2Keywords.append(word) for word in adjKeywords if not (" " not in word and zipf_frequency(word, 'en') > 5.1)]
+        adjusted_keywords = []
+        [adjusted_keywords.append(word.translate(str.maketrans('', '', string.punctuation))) for word in keywords if (word.translate(str.maketrans('', '', string.punctuation)) not in adjusted_keywords) and len(word) > 2]
 
         # Remove words with the same topics.
         topics = []
-        adj3Keywords = []
+        adjusted_keywords2 = []
 
-        for word in adj2Keywords:
+        for word in adjusted_keywords:
             try:
                 if pytrends.suggestions(word)[0]['mid'] not in topics:
-                    adj3Keywords.append(word)
+                    adjusted_keywords2.append(word)
                     topics.append(pytrends.suggestions(word)[0]['mid'])
             except IndexError:
                 continue
 
-        return adj3Keywords
+        return adjusted_keywords2
 
 # ------------------------------------------------------------------------------- #
+
 
 get_interest_over_time = pytrendsUpgrade.get_interest_over_time
 get_viral_keywords = pytrendsUpgrade.get_viral_keywords

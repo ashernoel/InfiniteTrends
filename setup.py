@@ -20,7 +20,7 @@ setup(
   author = 'Asher Noel',
   author_email = 'asher13a@gmail.com',
   url = 'https://www.ashernoel.io',
-  download_url = 'https://github.com/ashernoel/InfiniteTrends/archive/v_02.tar.gz',
+  download_url = 'https://github.com/ashernoel/InfiniteTrends/archive/v_03.tar.gz',
   keywords = ['Google Trends', 'Interest', 'Viral', 'Related'],
   install_requires=[
           'pytrends',

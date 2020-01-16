@@ -1,0 +1,1 @@
+from InfiniteTrends.InfiniteTrends import pytrendsUpgrade

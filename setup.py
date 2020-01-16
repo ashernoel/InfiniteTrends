@@ -12,7 +12,7 @@ with io.open(os.path.join(dir, 'README.md'), encoding='utf-8') as f:
 setup(
   name = 'InfiniteTrends',
   packages = ['InfiniteTrends'],
-  version = '0.2',
+  version = '0.3',
   license='MIT',
   description = 'An upgraded Google Trends API that can query infinitely many terms.',
   long_description=long_description,

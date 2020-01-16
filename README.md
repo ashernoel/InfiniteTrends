@@ -1,6 +1,6 @@
 # InfiniteTrends
 
- [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) [![Inline docs](http://inch-ci.org/github/ashernoel/infinitetrends.svg?branch=master)](http://inch-ci.org/github/ashernoel/infinitetrends)
+ [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) [![Inline docs](http://inch-ci.org/github/ashernoel/infinitetrends.svg?branch=master)](http://inch-ci.org/github/ashernoel/infinitetrends)[![HitCount](http://hits.dwyl.io/ashernoel/infinitetrends.svg)](http://hits.dwyl.io/ashernoel/infinitetrends)
 
 **InfiniteTrends** is a Python API built upon [pytrends](https://github.com/GeneralMills/pytrends) to query data from [trends.google.com](http://www.trends.google.com).
 

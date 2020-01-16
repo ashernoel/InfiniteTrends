@@ -1,4 +1,5 @@
 from distutils.core import setup
+
 setup(
   name = 'InfiniteTrends',         # How you named your package folder (MyLib)
   packages = ['InfiniteTrends'],   # Chose the same as "name"
@@ -7,7 +8,7 @@ setup(
   description = 'An upgraded Google Trends API that can query infinitely many terms.',   # Give a short description about your library
   author = 'Asher Noel',                   # Type in your name
   author_email = 'asher13a@gmail.com',      # Type in your E-Mail
-  url = 'ashernoel.io',   # Provide either the link to your github or to your website
+  url = 'https://www.ashernoel.io',   # Provide either the link to your github or to your website
   download_url = 'https://github.com/ashernoel/InfiniteTrends/archive/v_01.tar.gz',    # I explain this later on
   keywords = ['Google Trends', 'Interest', 'Viral', 'Related'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
@@ -19,10 +20,6 @@ setup(
     'Intended Audience :: Developers',      # Define that your audience are developers
     'Topic :: Software Development :: Build Tools',
     'License :: OSI Approved :: MIT License',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.4',
-    'Programming Language :: Python :: 3.5',
-    'Programming Language :: Python :: 3.6',
-    'Programming Language :: Python :: 3.7',
   ],
+  python_requires='>=3.0',
 )

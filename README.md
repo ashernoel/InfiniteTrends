@@ -1,6 +1,6 @@
 # InfiniteTrends
 
- [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) [![Inline docs](http://inch-ci.org/github/ashernoel/infinitetrends.svg?branch=master)](http://inch-ci.org/github/ashernoel/infinitetrends) [![HitCount](http://hits.dwyl.io/ashernoel/infinitetrends.svg)](http://hits.dwyl.io/ashernoel/infinitetrends)
+ [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) [![Inline docs](http://inch-ci.org/github/ashernoel/infinitetrends.svg?branch=master)](http://inch-ci.org/github/ashernoel/infinitetrends)
 
 **InfiniteTrends** is a Python API built upon [pytrends](https://github.com/GeneralMills/pytrends) to query data from [trends.google.com](http://www.trends.google.com).
 
@@ -14,7 +14,7 @@ pip install InfiniteTrends
 ```
 You can also clone this repository and run `python setup.py install`.
 
-Documentation
+Getting Started
 ------------
 ### Interest Over Time For Many Keywords
 
@@ -75,3 +75,14 @@ Dependencies
 ------------
 * [Pandas](https://pandas.pydata.org/)
 * [Pytrends](https://github.com/GeneralMills/pytrends) 
+
+
+License
+------------
+See [LICENSE](LICENSE)
+
+
+Build Status
+------------
+
+[![Build Status](https://travis-ci.org/firebase/quickstart-js.svg?branch=master)](https://travis-ci.org/firebase/quickstart-js) [![HitCount](http://hits.dwyl.io/ashernoel/infinitetrends.svg)](http://hits.dwyl.io/ashernoel/infinitetrends)
